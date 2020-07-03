@@ -20,12 +20,17 @@ public class CustomerController {
     }
 
     @GetMapping("/api/customer")
-    public Customer getCustomer(@RequestParam Long id){
+    public Customer getCustomer(@RequestParam Long id) {
         return customerService.getCustomer(id);
     }
 
     @GetMapping("/api/customers")
-    public List<Customer> getCustomers(){
+    public List<Customer> getCustomers() {
         return customerService.getCustomers();
+    }
+
+    @PutMapping("/api/customers")
+    public Customer updateCustomer(@RequestBody Customer customer) {
+        return customerService.updateCustomer(customer);
     }
 }

@@ -38,6 +38,13 @@ public class CustomerServiceImpl implements CustomerService {
         return customerList;
     }
 
+    @Override
+    public Customer updateCustomer(Customer customer) {
+        CustomerEntity entity = convertCustomerToCustomerEntity(customer);
+        CustomerEntity updatedEntity = customerRepository.save(entity);
+        return convertCustomerEntityToCustomer(updatedEntity);
+    }
+
     private CustomerEntity convertCustomerToCustomerEntity(Customer customer) {
         return new CustomerEntity(customer.getId(), customer.getFirstName(), customer.getLastName(), customer.getEmail(), customer.getAge());
     }
