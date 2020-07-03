@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface CustomerRepository extends CrudRepository<CustomerEntity, Long> {
     List<CustomerEntity> findAll();
+    void deleteById(Long id);
 }

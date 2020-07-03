@@ -19,8 +19,8 @@ public class CustomerController {
         return customerService.createCustomer(customer);
     }
 
-    @GetMapping("/api/customer")
-    public Customer getCustomer(@RequestParam Long id) {
+    @GetMapping("/api/customer/{id}")
+    public Customer getCustomer(@PathVariable("id") Long id) {
         return customerService.getCustomer(id);
     }
 
@@ -34,9 +34,14 @@ public class CustomerController {
         return customerService.updateCustomer(customer);
     }
 
-        @PatchMapping("/api/customers")
+    @PatchMapping("/api/customers")
     public Customer patchCustomer(@RequestBody Customer customer) {
         return customerService.patchCustomer(customer);
+    }
+
+    @DeleteMapping("/api/customers/{id}")
+    public void deleteCustomer(@PathVariable("id") Long id) {
+        customerService.deleteCustomer(id);
     }
 
 

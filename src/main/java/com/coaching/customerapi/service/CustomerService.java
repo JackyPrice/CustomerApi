@@ -10,4 +10,5 @@ public interface CustomerService {
     Customer patchCustomer(Customer customer);
     Customer getCustomer(Long id);
     List<Customer> getCustomers();
+    void deleteCustomer(Long id);
 }

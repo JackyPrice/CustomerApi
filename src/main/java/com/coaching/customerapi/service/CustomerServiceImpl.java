@@ -52,6 +52,11 @@ public class CustomerServiceImpl implements CustomerService {
         return convertCustomerEntityToCustomer(savedEntity);
     }
 
+    @Override
+    public void deleteCustomer(Long id) {
+        customerRepository.deleteById(id);
+    }
+
     private CustomerEntity updateFields(Customer customer) {
         CustomerEntity entity = customerRepository.findById(customer.getId()).get();
         if(customer.getId()!=null) entity.setId(customer.getId());
