@@ -5,6 +5,9 @@ import com.coaching.customerapi.model.Customer;
 import com.coaching.customerapi.repository.CustomerRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class CustomerServiceImpl implements CustomerService {
     private final CustomerRepository customerRepository;
@@ -25,6 +28,14 @@ public class CustomerServiceImpl implements CustomerService {
     public Customer getCustomer(Long id) {
         savedCustomer = customerRepository.findById(id).get();
         return convertCustomerEntityToCustomer(savedCustomer);
+    }
+
+    @Override
+    public List<Customer> getCustomers() {
+        List<CustomerEntity> savedCustomerList = customerRepository.findAll();
+        List<Customer> customerList = new ArrayList<>();
+        savedCustomerList.forEach(customerEntity -> customerList.add(convertCustomerEntityToCustomer(customerEntity)));
+        return customerList;
     }
 
     private CustomerEntity convertCustomerToCustomerEntity(Customer customer) {
