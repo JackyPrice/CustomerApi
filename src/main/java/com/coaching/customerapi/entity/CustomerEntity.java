@@ -14,6 +14,8 @@ public class CustomerEntity {
     private String email;
     private int age;
 
+    public CustomerEntity(){}
+
     public CustomerEntity(Long id, String firstName, String lastName, String email, int age) {
         this.id = id;
         this.firstName = firstName;

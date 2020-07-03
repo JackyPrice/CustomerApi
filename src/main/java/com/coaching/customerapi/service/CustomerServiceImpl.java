@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class CustomerServiceImpl implements CustomerService {
     private final CustomerRepository customerRepository;
+    private CustomerEntity savedCustomer;
 
     public CustomerServiceImpl(CustomerRepository customerRepository) {
         this.customerRepository = customerRepository;
@@ -16,7 +17,13 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public Customer createCustomer(Customer customer) {
         CustomerEntity entity = convertCustomerToCustomerEntity(customer);
-        CustomerEntity savedCustomer = customerRepository.save(entity);
+        savedCustomer = customerRepository.save(entity);
+        return convertCustomerEntityToCustomer(savedCustomer);
+    }
+
+    @Override
+    public Customer getCustomer(Long id) {
+        savedCustomer = customerRepository.findById(id).get();
         return convertCustomerEntityToCustomer(savedCustomer);
     }
 

@@ -2,9 +2,7 @@ package com.coaching.customerapi.controller;
 
 import com.coaching.customerapi.model.Customer;
 import com.coaching.customerapi.service.CustomerService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class CustomerController {
@@ -17,5 +15,10 @@ public class CustomerController {
     @PostMapping("/api/customers")
     public Customer createCustomer(@RequestBody Customer customer) {
         return customerService.createCustomer(customer);
+    }
+
+    @GetMapping("/api/customer")
+    public Customer getCustomer(@RequestParam Long id){
+        return customerService.getCustomer(id);
     }
 }

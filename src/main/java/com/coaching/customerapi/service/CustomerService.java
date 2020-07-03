@@ -4,4 +4,5 @@ import com.coaching.customerapi.model.Customer;
 
 public interface CustomerService {
     Customer createCustomer(Customer customer);
+    Customer getCustomer(Long id);
 }
