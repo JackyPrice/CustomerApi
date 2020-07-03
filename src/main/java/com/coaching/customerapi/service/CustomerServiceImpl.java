@@ -45,6 +45,23 @@ public class CustomerServiceImpl implements CustomerService {
         return convertCustomerEntityToCustomer(updatedEntity);
     }
 
+    @Override
+    public Customer patchCustomer(Customer customer) {
+        CustomerEntity entity = updateFields(customer);
+        CustomerEntity savedEntity = customerRepository.save(entity);
+        return convertCustomerEntityToCustomer(savedEntity);
+    }
+
+    private CustomerEntity updateFields(Customer customer) {
+        CustomerEntity entity = customerRepository.findById(customer.getId()).get();
+        if(customer.getId()!=null) entity.setId(customer.getId());
+        if(customer.getFirstName()!=null) entity.setFirstName(customer.getFirstName());
+        if(customer.getLastName()!=null) entity.setLastName(customer.getLastName());
+        if(customer.getEmail()!=null) entity.setEmail(customer.getEmail());
+        if(customer.getAge()!=0) entity.setAge(customer.getAge());
+        return entity;
+    }
+
     private CustomerEntity convertCustomerToCustomerEntity(Customer customer) {
         return new CustomerEntity(customer.getId(), customer.getFirstName(), customer.getLastName(), customer.getEmail(), customer.getAge());
     }

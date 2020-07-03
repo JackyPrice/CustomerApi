@@ -33,4 +33,11 @@ public class CustomerController {
     public Customer updateCustomer(@RequestBody Customer customer) {
         return customerService.updateCustomer(customer);
     }
+
+        @PatchMapping("/api/customers")
+    public Customer patchCustomer(@RequestBody Customer customer) {
+        return customerService.patchCustomer(customer);
+    }
+
+
 }
