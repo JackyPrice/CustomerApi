@@ -8,6 +8,8 @@ public class Customer {
     private String email;
     private int age;
 
+    public Customer(){}
+
     public Customer(Long id, String firstName, String lastName, String email, int age) {
         this.id = id;
         this.firstName = firstName;

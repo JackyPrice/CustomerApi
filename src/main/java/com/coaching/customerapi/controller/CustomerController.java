@@ -16,7 +16,8 @@ public class CustomerController {
 
     @PostMapping("/api/customers")
     public Customer createCustomer(@RequestBody Customer customer) {
-        return customerService.createCustomer(customer);
+        Customer customerFromController = customerService.createCustomer(customer);
+        return customerFromController;
     }
 
     @GetMapping("/api/customer/{id}")
