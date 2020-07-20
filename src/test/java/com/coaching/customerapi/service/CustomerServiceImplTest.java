@@ -3,6 +3,7 @@ package com.coaching.customerapi.service;
 import com.coaching.customerapi.entity.CustomerEntity;
 import com.coaching.customerapi.model.Customer;
 import com.coaching.customerapi.repository.CustomerRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,8 +14,8 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -23,8 +24,15 @@ class CustomerServiceImplTest {
     @Mock
     private CustomerRepository customerRepository;
 
+    private CustomerServiceImpl customerService;
+
+    @BeforeEach
+    public  void setup(){
+        this.customerService = new CustomerServiceImpl(customerRepository);
+    }
+
     @Test
-    @DisplayName("given a valid Customer when the create customer method is called then it saves this customer in the database and returns a customer with a valid ID")
+    @DisplayName("given a valid Customer when the create customer method is called then it saves this customer in the database and returns a valid customer")
     public void createCustomer() {
         //given
         Customer expectedSavedCustomer = new Customer(1L, "TestFirstName", "TestSecondName", "test@test.com", 30);
@@ -32,7 +40,6 @@ class CustomerServiceImplTest {
         CustomerEntity savedCustomerEntity = new CustomerEntity(1L, "TestFirstName", "TestSecondName", "test@test.com", 30);
         Customer customerToBeSaved = new Customer(null, "TestFirstName", "TestSecondName", "test@test.com", 30);
 
-        CustomerServiceImpl customerService = new CustomerServiceImpl(customerRepository);
         when(customerRepository.save(customerEntityToBeSaved)).thenReturn(savedCustomerEntity);
 
         //when
@@ -49,7 +56,6 @@ class CustomerServiceImplTest {
         //given
         Customer expectedCustomer = new Customer(2L, "Firstname", "SecondName", "email@email.com", 20);
         CustomerEntity savedCustomerEntity = new CustomerEntity(2L, "Firstname", "SecondName", "email@email.com", 20);
-        CustomerServiceImpl customerService = new CustomerServiceImpl(customerRepository);
         when(customerRepository.findById(2L)).thenReturn(Optional.of(savedCustomerEntity));
 
         //when
@@ -64,7 +70,6 @@ class CustomerServiceImplTest {
     public void getCustomers() {
 //        given
 
-        CustomerServiceImpl customerServiceImpl = new CustomerServiceImpl(customerRepository);
         List<Customer> expectedCustomerList = List.of(
                 new Customer(1L, "Squall", "Leonhart", "test@test.com", 17),
                 new Customer(2L, "Cloud", "Strife", "test@test.com", 24),
@@ -76,10 +81,9 @@ class CustomerServiceImplTest {
                 new CustomerEntity(2L, "Cloud", "Strife", "test@test.com", 24),
                 new CustomerEntity(3L, "Noctis", "Caelum", "test@test.com", 20)));
 
-        List<Customer> actualCustomerList = customerServiceImpl.getCustomers();
+        List<Customer> actualCustomerList = customerService.getCustomers();
 
 //        then
-
         assertEquals(expectedCustomerList, actualCustomerList);
     }
 
@@ -87,15 +91,14 @@ class CustomerServiceImplTest {
     @DisplayName("given valide customer when updated then customer in returned is the updated customer")
     public void updateCustomer() {
 //        given
-        CustomerServiceImpl customerServiceImpl = new CustomerServiceImpl(customerRepository);
         Customer updateCustomerInput = new Customer(null, "updated", "customer", "updated@email.com", 20);
-        CustomerEntity updateForCustomer = new CustomerEntity(null, "updated", "customer", "updated@email.com", 20);
+        CustomerEntity updateCustomerEntity = new CustomerEntity(null, "updated", "customer", "updated@email.com", 20);
         CustomerEntity updatedCustomer = new CustomerEntity(1L, "updated", "customer", "updated@email.com", 20);
         Customer expectedCustomer = new Customer(1L, "updated", "customer", "updated@email.com", 20);
 
 //        when
-        when(customerRepository.save(updateForCustomer)).thenReturn(updatedCustomer);
-        Customer actualCustomer = customerServiceImpl.updateCustomer(updateCustomerInput);
+        when(customerRepository.save(updateCustomerEntity)).thenReturn(updatedCustomer);
+        Customer actualCustomer = customerService.updateCustomer(updateCustomerInput);
 
 //        then
         assertEquals(expectedCustomer, actualCustomer);
@@ -105,7 +108,6 @@ class CustomerServiceImplTest {
     @DisplayName("given valid customer fields when patchCustomer is called then the correct changes are made to the Customer")
     public void patchCustomer() {
 //        given
-        CustomerServiceImpl customerServiceImpl = new CustomerServiceImpl(customerRepository);
         Customer patchCustomerInput = new Customer(1L, "patchedname", null, null, 0);
         CustomerEntity savedCustomer = new CustomerEntity(1L, "fistname", "lastname", "email@email.com", 1);
         CustomerEntity updatedCustomer = new CustomerEntity(1L, "patchedname", "lastname", "email@email.com", 1);
@@ -115,7 +117,7 @@ class CustomerServiceImplTest {
         when(customerRepository.findById(1L)).thenReturn(Optional.of(savedCustomer));
         when(customerRepository.save(updatedCustomer)).thenReturn(updatedCustomer);
 
-        Customer actualCustomer = customerServiceImpl.patchCustomer(patchCustomerInput);
+        Customer actualCustomer = customerService.patchCustomer(patchCustomerInput);
 //        then
         assertEquals(expectedCustomer, actualCustomer);
     }
@@ -124,16 +126,12 @@ class CustomerServiceImplTest {
     @DisplayName("given valid id, when deleted then doesn't return a value")
     public void deleteCustomer(){
 //        given
-        CustomerServiceImpl customerServiceImpl = new CustomerServiceImpl(customerRepository);
-        Customer saveCustomer = new Customer(1L, "delete", "customer", "email@email.com", 1);
-        CustomerEntity saveCustomerEntity = new CustomerEntity(1L, "delete", "customer", "email@email.com", 1);
-        CustomerEntity savedCustomer = new CustomerEntity(1L, "delete", "customer", "email@email.com", 1);
 
 //        when
-        String response = customerServiceImpl.deleteCustomer(1L);
+        String response = customerService.deleteCustomer(1L);
 
 //        then
+        verify(customerRepository).deleteById(1L);
         assertEquals("Success", response);
-
     }
 }
