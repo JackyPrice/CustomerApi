@@ -53,9 +53,8 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public String deleteCustomer(Long id) {
+    public void deleteCustomer(Long id) {
         customerRepository.deleteById(id);
-        return "Success";
     }
 
     private CustomerEntity updateFields(Customer customer) {

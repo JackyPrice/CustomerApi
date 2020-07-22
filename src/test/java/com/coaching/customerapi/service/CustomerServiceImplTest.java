@@ -27,7 +27,7 @@ class CustomerServiceImplTest {
     private CustomerServiceImpl customerService;
 
     @BeforeEach
-    public  void setup(){
+    public void setup() {
         this.customerService = new CustomerServiceImpl(customerRepository);
     }
 
@@ -56,6 +56,7 @@ class CustomerServiceImplTest {
         //given
         Customer expectedCustomer = new Customer(2L, "Firstname", "SecondName", "email@email.com", 20);
         CustomerEntity savedCustomerEntity = new CustomerEntity(2L, "Firstname", "SecondName", "email@email.com", 20);
+
         when(customerRepository.findById(2L)).thenReturn(Optional.of(savedCustomerEntity));
 
         //when
@@ -76,10 +77,11 @@ class CustomerServiceImplTest {
                 new Customer(3L, "Noctis", "Caelum", "test@test.com", 20)
         );
 
-//        when
         when(customerRepository.findAll()).thenReturn(List.of(new CustomerEntity(1L, "Squall", "Leonhart", "test@test.com", 17),
                 new CustomerEntity(2L, "Cloud", "Strife", "test@test.com", 24),
                 new CustomerEntity(3L, "Noctis", "Caelum", "test@test.com", 20)));
+
+//        when
 
         List<Customer> actualCustomerList = customerService.getCustomers();
 
@@ -96,8 +98,9 @@ class CustomerServiceImplTest {
         CustomerEntity updatedCustomer = new CustomerEntity(1L, "updated", "customer", "updated@email.com", 20);
         Customer expectedCustomer = new Customer(1L, "updated", "customer", "updated@email.com", 20);
 
-//        when
         when(customerRepository.save(updateCustomerEntity)).thenReturn(updatedCustomer);
+
+//        when
         Customer actualCustomer = customerService.updateCustomer(updateCustomerInput);
 
 //        then
@@ -113,9 +116,10 @@ class CustomerServiceImplTest {
         CustomerEntity updatedCustomer = new CustomerEntity(1L, "patchedname", "lastname", "email@email.com", 1);
         Customer expectedCustomer = new Customer(1L, "patchedname", "lastname", "email@email.com", 1);
 
-//        when
         when(customerRepository.findById(1L)).thenReturn(Optional.of(savedCustomer));
         when(customerRepository.save(updatedCustomer)).thenReturn(updatedCustomer);
+
+//        when
 
         Customer actualCustomer = customerService.patchCustomer(patchCustomerInput);
 //        then
@@ -124,14 +128,12 @@ class CustomerServiceImplTest {
 
     @Test
     @DisplayName("given valid id, when deleted then doesn't return a value")
-    public void deleteCustomer(){
+    public void deleteCustomer() {
 //        given
 
 //        when
-        String response = customerService.deleteCustomer(1L);
 
 //        then
         verify(customerRepository).deleteById(1L);
-        assertEquals("Success", response);
     }
 }

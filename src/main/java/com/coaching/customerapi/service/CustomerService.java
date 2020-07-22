@@ -10,5 +10,5 @@ public interface CustomerService {
     Customer patchCustomer(Customer customer);
     Customer getCustomer(Long id);
     List<Customer> getCustomers();
-    String deleteCustomer(Long id);
+    void deleteCustomer(Long id);
 }
