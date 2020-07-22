@@ -11,14 +11,18 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.convert.DataSizeUnit;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.util.List;
+
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @ExtendWith(MockitoExtension.class) // "I want to use Mocks/Mock Objects in this class"
 class CustomerControllerTest {
@@ -60,6 +64,63 @@ class CustomerControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", Is.is(1)));
     }
+
+    @Test
+    @DisplayName("given valid id, when getCustomer get request is called then expected customer returned")
+    void testGetCustomerById() throws Exception {
+//        given
+        Customer expectedCustomer = new Customer(1L, "carl", "saptarshi", "test@test.com", 23);
+        when(customerService.getCustomer(1L)).thenReturn(expectedCustomer);
+
+//        whenThen
+        mockMvc.perform(get("/api/customer/1"))
+                .andExpect(status().isOk())
+                .andExpect(content().json("{" +
+                "\"id\": 1," +
+                "\"firstName\": \"carl\"," +
+                "\"lastName\": \"saptarshi\"," +
+                "\"email\": \"test@test.com\"," +
+                "\"age\": 23" +
+                "}"));
+    }
+
+    @Test
+    @DisplayName("given request get request to customers endpoint, when called then expected list of customers returned")
+    void testGetCustomersReturnsList() throws Exception {
+//        given
+        List<Customer> expectedCustomerList = List.of(
+                new Customer(1L, "Jacky", "Price", "test@test.com", 31),
+                new Customer(2L, "Carl", "Saptarshi", "test@test.com", 25)
+        );
+
+        when(customerService.getCustomers()).thenReturn(expectedCustomerList);
+
+//        whenThen
+
+        mockMvc.perform(get("/api/customers"))
+                .andExpect(status().isOk())
+                .andExpect(content().json("[" +
+                        "    {" +
+                        "        \"id\": 1," +
+                        "        \"firstName\": \"Jacky\"," +
+                        "        \"lastName\": \"Price\"," +
+                        "        \"email\": \"test@test.com\"," +
+                        "        \"age\": 31" +
+                        "    }," +
+                        "    {" +
+                        "        \"id\": 2," +
+                        "        \"firstName\": \"Carl\"," +
+                        "        \"lastName\": \"Saptarshi\"," +
+                        "        \"email\": \"test@test.com\"," +
+                        "        \"age\": 25" +
+                        "    }" +
+                        "]"
+                ));
+    }
+
+    //TODO: complete all
+
+    //when doing delete, can't assert on void, but can verify the status is ok - all you can at this stage
 
     private static String asJsonString(final Object obj) {
         try {
