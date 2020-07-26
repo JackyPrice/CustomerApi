@@ -1,0 +1,2 @@
+INSERT INTO customers(id, firstname, lastname, email, age) VALUES (100, 'firstname1', 'lastname1', 'email1@address.com', 20);
+INSERT INTO customers(id, firstname, lastname, email, age) VALUES (101, 'firstname2', 'lastname2', 'email2@address.com', 21);

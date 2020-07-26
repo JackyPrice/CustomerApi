@@ -90,7 +90,7 @@ class CustomerServiceImplTest {
     }
 
     @Test
-    @DisplayName("given valide customer when updated then customer in returned is the updated customer")
+    @DisplayName("given valid customer when updated then customer in returned is the updated customer")
     public void updateCustomer() {
 //        given
         Customer updateCustomerInput = new Customer(null, "updated", "customer", "updated@email.com", 20);
