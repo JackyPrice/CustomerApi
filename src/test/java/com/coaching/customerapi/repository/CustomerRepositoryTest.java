@@ -25,7 +25,7 @@ class CustomerRepositoryTest {
 
     @Test
     @DisplayName("given call to findAll method, when database is called then return 2 customers ")
-    public void findAllMethodReturnsExpectedCustomers(){
+    void findAllMethodReturnsExpectedCustomers(){
 //      given
         List<CustomerEntity> expectedCustomerEntityList = List.of(
                 new CustomerEntity(100L, "firstname1", "lastname1", "email1@address.com", 20),
@@ -37,5 +37,26 @@ class CustomerRepositoryTest {
         assertThat(databaseCustomerEntityList).containsExactlyInAnyOrder(expectedCustomerEntityList.get(0), expectedCustomerEntityList.get(1));
     }
 
+    @Test
+    @DisplayName("given a valid id, when deleteById is called, then the entry is deleted")
+    void testDeleteByIdDeletesCorrectEntry(){
 
+//        given
+        List<CustomerEntity> initialCustomerEntityList = List.of(
+                new CustomerEntity(100L, "firstname1", "lastname1", "email1@address.com", 20),
+                new CustomerEntity(101L, "firstname2", "lastname2", "email2@address.com", 21));
+        List<CustomerEntity> expectedCustomerEntityList = List.of(
+                new CustomerEntity(100L, "firstname1", "lastname1", "email1@address.com", 20));
+//        when
+        List<CustomerEntity> initialDatabaseCustomerEntityList = customerRepository.findAll();
+//        then
+        assertThat(initialDatabaseCustomerEntityList.size()).isEqualTo(2);
+        assertThat(initialDatabaseCustomerEntityList).containsExactlyInAnyOrder(initialCustomerEntityList.get(0), initialCustomerEntityList.get(1));
+
+//        when
+        customerRepository.deleteById(101L);
+        List<CustomerEntity> actualDatabaseCustomerEntityList = customerRepository.findAll();
+        assertThat(actualDatabaseCustomerEntityList.size()).isEqualTo(1);
+        assertThat(actualDatabaseCustomerEntityList).containsExactlyInAnyOrder(actualDatabaseCustomerEntityList.get(0));
+    }
 }
