@@ -68,10 +68,20 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     private CustomerEntity convertCustomerToCustomerEntity(Customer customer) {
-        return new CustomerEntity(customer.getId(), customer.getFirstName(), customer.getLastName(), customer.getEmail(), customer.getAge());
+        return CustomerEntity.builder()
+                .id(customer.getId())
+                .firstName(customer.getFirstName())
+                .lastName(customer.getLastName())
+                .email(customer.getEmail())
+                .age(customer.getAge()).build();
     }
 
     private Customer convertCustomerEntityToCustomer(CustomerEntity customerEntity) {
-        return new Customer(customerEntity.getId(), customerEntity.getFirstName(), customerEntity.getLastName(), customerEntity.getEmail(), customerEntity.getAge());
+        return Customer.builder()
+                .id(customerEntity.getId())
+                .firstName(customerEntity.getFirstName())
+                .lastName(customerEntity.getLastName())
+                .email(customerEntity.getEmail())
+                .age(customerEntity.getAge()).build();
     }
 }

@@ -1,6 +1,5 @@
 package com.coaching.customerapi.controller;
 
-import com.coaching.customerapi.entity.CustomerEntity;
 import com.coaching.customerapi.model.Customer;
 import com.coaching.customerapi.service.CustomerService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -25,7 +24,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @ExtendWith(MockitoExtension.class)
-        // "I want to use Mocks/Mock Objects in this class"
 class CustomerControllerTest {
     @Mock
     private CustomerService customerService;
@@ -41,22 +39,22 @@ class CustomerControllerTest {
     @Test
     @DisplayName("given valid customer then return customer with valid id")
     void testCreateCustomer() throws Exception {
-        //Given
-        Customer customerToSave = new Customer();
-        customerToSave.setFirstName("Test");
-        customerToSave.setLastName("Customer");
-        customerToSave.setAge(1);
-        customerToSave.setEmail("test@test.com");
+        // given
+        Customer customerToSave = Customer.builder()
+                .firstName("Test")
+                .lastName("Customer")
+                .email("test@test.com")
+                .age(1).build();
 
-        Customer expectedCustomer = new Customer();
-        expectedCustomer.setId(1L);
-        expectedCustomer.setFirstName("Test");
-        expectedCustomer.setLastName("Customer");
-        expectedCustomer.setAge(1);
-        expectedCustomer.setEmail("test@test.com");
+        Customer expectedCustomer = Customer.builder()
+        .id(1L)
+        .firstName("Test")
+        .lastName("Customer")
+        .email("test@test.com")
+        .age(1).build();
 
         when(customerService.createCustomer(customerToSave)).thenReturn(expectedCustomer);
-        //WhenThen
+        // WhenThen
         mockMvc.perform(MockMvcRequestBuilders
                 .post("/api/customers")
                 .accept(MediaType.APPLICATION_JSON)
@@ -69,11 +67,17 @@ class CustomerControllerTest {
     @Test
     @DisplayName("given valid id, when getCustomer get request is called then expected customer returned")
     void testGetCustomerById() throws Exception {
-//        given
-        Customer expectedCustomer = new Customer(1L, "carl", "saptarshi", "test@test.com", 23);
+      // given
+        Customer expectedCustomer = Customer.builder()
+        .id(1L)
+        .firstName("carl")
+        .lastName("saptarshi")
+        .email("test@test.com")
+        .age(23).build();
+
         when(customerService.getCustomer(1L)).thenReturn(expectedCustomer);
 
-//        whenThen
+      // whenThen
         mockMvc.perform(get("/api/customer/1"))
                 .andExpect(status().isOk())
                 .andExpect(content().json("{" +
@@ -88,16 +92,15 @@ class CustomerControllerTest {
     @Test
     @DisplayName("given request get request to customers endpoint, when called then expected list of customers returned")
     void testGetCustomersReturnsList() throws Exception {
-//        given
-        List<Customer> expectedCustomerList = List.of(
-                new Customer(1L, "Jacky", "Price", "test@test.com", 31),
-                new Customer(2L, "Carl", "Saptarshi", "test@test.com", 25)
-        );
+        // given
+        Customer customer1 = Customer.builder().id(1L).firstName("Jacky").lastName("Price").email("test@test.com").age(31).build();
+        Customer customer2 = Customer.builder().id(2L).firstName("Carl").lastName("Saptarshi").email("test@test.com").age(25).build();
+
+        List<Customer> expectedCustomerList = List.of(customer1, customer2);
 
         when(customerService.getCustomers()).thenReturn(expectedCustomerList);
 
-//        whenThen
-
+        // whenThen
         mockMvc.perform(get("/api/customers"))
                 .andExpect(status().isOk())
                 .andExpect(content().json("[" +
@@ -122,12 +125,11 @@ class CustomerControllerTest {
     @Test
     @DisplayName("give valid input, when updateCustomer is called then updated customer is returned")
     void testUpdateCustomerWithValidInput() throws Exception {
-//      given
-        Customer updateCustomer = new Customer(2L, "updated", "Customer", "update@updateemail.com", 25);
+        // given
+        Customer updateCustomer = Customer.builder().id(2L).firstName("updated").lastName("customer").email("update@updateemail.com").age(25).build();
 
-//      whenthen
+        // whenthen
         when(customerService.updateCustomer(updateCustomer)).thenReturn(updateCustomer);
-
 
         mockMvc.perform(put("/api/customers")
                 .accept(MediaType.APPLICATION_JSON)
@@ -138,7 +140,7 @@ class CustomerControllerTest {
                         "    \"id\": 2," +
                         "    \"firstName\": \"updated\"," +
                         "    \"lastName\": \"customer\"," +
-                        "    \"email\": \"test@test.com\"," +
+                        "    \"email\": \"update@updateemail.com\"," +
                         "    \"age\": 25" +
                         "}"));
     }
@@ -146,42 +148,39 @@ class CustomerControllerTest {
     @Test
     @DisplayName("given valid fields, when patchCustomer is called, then a Customer with these changes should be returned")
     void testPatchCustomerWithValidInputs() throws Exception {
-//        given
-        Customer patchForCustomer = new Customer(1L, "patch", null, null, 0);
-        Customer patchedCustomer = new Customer(1L, "patch", "lastname", "test@test.com", 20);
+        // given
+        Customer patchForCustomer = Customer.builder().id(1L).firstName("patch").build();
+        Customer patchedCustomer = Customer.builder().id(1L).firstName("patch").lastName("lastName").email("test@test.com").age(20).build();
 
         when(customerService.patchCustomer(patchForCustomer)).thenReturn(patchedCustomer);
 
-//        whenthen
+        // whenthen
         mockMvc.perform(patch("/api/customers")
-        .accept(MediaType.APPLICATION_JSON)
-        .content(asJsonString(patchForCustomer))
-        .contentType(MediaType.APPLICATION_JSON))
+                .accept(MediaType.APPLICATION_JSON)
+                .content(asJsonString(patchForCustomer))
+                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-        .andExpect(content().json("{" +
-                "    \"id\": 1," +
-                "    \"firstName\": \"patch\"," +
-                "    \"lastName\": \"lastname\"," +
-                "    \"email\": \"test@test.com\"," +
-                "    \"age\": 20" +
-                "}"));
+                .andExpect(content().json("{" +
+                        "    \"id\": 1," +
+                        "    \"firstName\": \"patch\"," +
+                        "    \"lastName\": \"lastname\"," +
+                        "    \"email\": \"test@test.com\"," +
+                        "    \"age\": 20" +
+                        "}"));
     }
 
     @Test
     @DisplayName("given valid id, when deleteCustomer is called then the customer is deleted")
     void testDeleteCustomerWithValidId() throws Exception {
-//        given
+      // given
 
-//        whenThen
+      // whenThen
         mockMvc.perform(delete("/api/customers/1"))
                 .andExpect(status().isOk());
+
         verify(customerService).deleteCustomer(1L);
 
     }
-
-    //TODO: complete all
-
-    //when doing delete, can't assert on void, but can verify the status is ok - all you can at this stage
 
     private static String asJsonString(final Object obj) {
         try {

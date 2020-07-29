@@ -3,6 +3,10 @@ package com.coaching.customerapi.service;
 import com.coaching.customerapi.entity.CustomerEntity;
 import com.coaching.customerapi.model.Customer;
 import com.coaching.customerapi.repository.CustomerRepository;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,6 +22,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 
+@Data
 @ExtendWith(MockitoExtension.class)
 class CustomerServiceImplTest {
 
@@ -34,106 +39,109 @@ class CustomerServiceImplTest {
     @Test
     @DisplayName("given a valid Customer when the create customer method is called then it saves this customer in the database and returns a valid customer")
     public void createCustomer() {
-        //given
-        Customer expectedSavedCustomer = new Customer(1L, "TestFirstName", "TestSecondName", "test@test.com", 30);
-        CustomerEntity customerEntityToBeSaved = new CustomerEntity(null, "TestFirstName", "TestSecondName", "test@test.com", 30);
-        CustomerEntity savedCustomerEntity = new CustomerEntity(1L, "TestFirstName", "TestSecondName", "test@test.com", 30);
-        Customer customerToBeSaved = new Customer(null, "TestFirstName", "TestSecondName", "test@test.com", 30);
+        // given
+
+        Customer customerToBeSaved = Customer.builder().firstName("TestFirstName").lastName("TestSecondName").email("test@test.com").age(30).build();
+        CustomerEntity customerEntityToBeSaved = CustomerEntity.builder().firstName("TestFirstName").lastName("TestSecondName").email("test@test.com").age(30).build();
+
+        CustomerEntity savedCustomerEntity = CustomerEntity.builder().id(1L).firstName("TestFirstName").lastName("TestSecondName").email("test@test.com").age(30).build();
+        Customer expectedSavedCustomer = Customer.builder().id(1L).firstName("TestFirstName").lastName("TestSecondName").email("test@test.com").age(30).build();
 
         when(customerRepository.save(customerEntityToBeSaved)).thenReturn(savedCustomerEntity);
 
-        //when
+        // when
         Customer actualSavedCustomer = customerService.createCustomer(customerToBeSaved);
 
-        //then
-        verify(customerRepository).save(customerEntityToBeSaved); // did the customer repository save method get called with this entity
+        // then
+        verify(customerRepository).save(customerEntityToBeSaved); //  did the customer repository save method get called with this entity
         assertEquals(expectedSavedCustomer, actualSavedCustomer);
     }
 
     @Test
     @DisplayName("give valid id, when the getCustomer method is called then it returns the customer with the same id")
     public void getCustomer() {
-        //given
-        Customer expectedCustomer = new Customer(2L, "Firstname", "SecondName", "email@email.com", 20);
-        CustomerEntity savedCustomerEntity = new CustomerEntity(2L, "Firstname", "SecondName", "email@email.com", 20);
+        // given
+        CustomerEntity savedCustomerEntity = CustomerEntity.builder().id(2L).firstName("Firstname").lastName("SecondName").email("email@email.com").age(20).build();
+        Customer expectedCustomer = Customer.builder().id(2L).firstName("Firstname").lastName("SecondName").email("email@email.com").age(20).build();
 
         when(customerRepository.findById(2L)).thenReturn(Optional.of(savedCustomerEntity));
 
-        //when
+        // when
         Customer actualCustomer = customerService.getCustomer(2L);
 
-        //then
+        // then
         assertEquals(expectedCustomer, actualCustomer);
     }
 
     @Test
     @DisplayName("given request for all customers, when get customers method is called, a full list of customers is returned")
     public void getCustomers() {
-//        given
-
+        // given
         List<Customer> expectedCustomerList = List.of(
-                new Customer(1L, "Squall", "Leonhart", "test@test.com", 17),
-                new Customer(2L, "Cloud", "Strife", "test@test.com", 24),
-                new Customer(3L, "Noctis", "Caelum", "test@test.com", 20)
+                Customer.builder().id(1L).firstName("Squall").lastName("Leonhart").email("test@test.com").age(17).build(),
+                Customer.builder().id(2L).firstName("Cloud").lastName("Strife").email("test@test.com").age(24).build(),
+                Customer.builder().id(3L).firstName("Noctis").lastName("Caelum").email("test@test.com").age(20).build()
         );
 
-        when(customerRepository.findAll()).thenReturn(List.of(new CustomerEntity(1L, "Squall", "Leonhart", "test@test.com", 17),
-                new CustomerEntity(2L, "Cloud", "Strife", "test@test.com", 24),
-                new CustomerEntity(3L, "Noctis", "Caelum", "test@test.com", 20)));
+        when(customerRepository.findAll()).thenReturn(List.of(
+                CustomerEntity.builder().id(1L).firstName("Squall").lastName("Leonhart").email("test@test.com").age(17).build(),
+                CustomerEntity.builder().id(2L).firstName("Cloud").lastName("Strife").email("test@test.com").age(24).build(),
+                CustomerEntity.builder().id(3L).firstName("Noctis").lastName("Caelum").email("test@test.com").age(20).build()
+        ));
 
-//        when
-
+        // when
         List<Customer> actualCustomerList = customerService.getCustomers();
 
-//        then
+        // then
         assertEquals(expectedCustomerList, actualCustomerList);
     }
 
     @Test
     @DisplayName("given valid customer when updated then customer in returned is the updated customer")
     public void updateCustomer() {
-//        given
-        Customer updateCustomerInput = new Customer(null, "updated", "customer", "updated@email.com", 20);
-        CustomerEntity updateCustomerEntity = new CustomerEntity(null, "updated", "customer", "updated@email.com", 20);
-        CustomerEntity updatedCustomer = new CustomerEntity(1L, "updated", "customer", "updated@email.com", 20);
-        Customer expectedCustomer = new Customer(1L, "updated", "customer", "updated@email.com", 20);
+        // given
+        Customer updateCustomerInput = Customer.builder().firstName("updated").lastName("customer").email("updated@test.com").age(20).build();
+        CustomerEntity updateCustomerEntity = CustomerEntity.builder().firstName("updated").lastName("customer").email("updated@test.com").age(20).build();
+        CustomerEntity updatedCustomer = CustomerEntity.builder().id(1L).firstName("updated").lastName("customer").email("updated@test.com").age(20).build();
+        Customer expectedCustomer = Customer.builder().id(1L).firstName("updated").lastName("customer").email("updated@test.com").age(20).build();
 
         when(customerRepository.save(updateCustomerEntity)).thenReturn(updatedCustomer);
 
-//        when
+        // when
         Customer actualCustomer = customerService.updateCustomer(updateCustomerInput);
 
-//        then
+        // then
         assertEquals(expectedCustomer, actualCustomer);
     }
 
     @Test
     @DisplayName("given valid customer fields when patchCustomer is called then the correct changes are made to the Customer")
     public void patchCustomer() {
-//        given
-        Customer patchCustomerInput = new Customer(1L, "patchedname", null, null, 0);
-        CustomerEntity savedCustomer = new CustomerEntity(1L, "fistname", "lastname", "email@email.com", 1);
-        CustomerEntity updatedCustomer = new CustomerEntity(1L, "patchedname", "lastname", "email@email.com", 1);
-        Customer expectedCustomer = new Customer(1L, "patchedname", "lastname", "email@email.com", 1);
+        // given
+        Customer patchCustomerInput = Customer.builder().id(1L).firstName("patchedname").build();
+        CustomerEntity savedCustomer = CustomerEntity.builder().id(1L).firstName("fistname").lastName("lastname").email("email@email.com").age(1).build();
+        CustomerEntity updatedCustomer = CustomerEntity.builder().id(1L).firstName("patchedname").lastName("lastname").email("email@email.com").age(1).build();
+        Customer expectedCustomer = Customer.builder().id(1L).firstName("patchedname").lastName("lastname").email("email@email.com").age(1).build();
 
         when(customerRepository.findById(1L)).thenReturn(Optional.of(savedCustomer));
         when(customerRepository.save(updatedCustomer)).thenReturn(updatedCustomer);
 
-//        when
-
+        // when
         Customer actualCustomer = customerService.patchCustomer(patchCustomerInput);
-//        then
+
+        // then
         assertEquals(expectedCustomer, actualCustomer);
     }
+
 
     @Test
     @DisplayName("given valid id, when deleted then doesn't return a value")
     public void deleteCustomer() {
-//        given
+        // given
 
-//        when
-
-//        then
+        // when
+        customerService.deleteCustomer(1L);
+        // then
         verify(customerRepository).deleteById(1L);
     }
 }
