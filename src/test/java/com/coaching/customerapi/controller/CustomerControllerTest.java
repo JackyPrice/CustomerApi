@@ -163,7 +163,7 @@ class CustomerControllerTest {
                 .andExpect(content().json("{" +
                         "    \"id\": 1," +
                         "    \"firstName\": \"patch\"," +
-                        "    \"lastName\": \"lastname\"," +
+                        "    \"lastName\": \"lastName\"," +
                         "    \"email\": \"test@test.com\"," +
                         "    \"age\": 20" +
                         "}"));
