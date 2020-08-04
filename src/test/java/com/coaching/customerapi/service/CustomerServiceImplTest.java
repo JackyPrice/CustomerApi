@@ -4,9 +4,6 @@ import com.coaching.customerapi.entity.CustomerEntity;
 import com.coaching.customerapi.model.Customer;
 import com.coaching.customerapi.repository.CustomerRepository;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -120,11 +117,11 @@ class CustomerServiceImplTest {
         // given
         Customer patchCustomerInput = Customer.builder().id(1L).firstName("patchedname").build();
         CustomerEntity savedCustomer = CustomerEntity.builder().id(1L).firstName("fistname").lastName("lastname").email("email@email.com").age(1).build();
-        CustomerEntity updatedCustomer = CustomerEntity.builder().id(1L).firstName("patchedname").lastName("lastname").email("email@email.com").age(1).build();
+        CustomerEntity patchedCustomer = CustomerEntity.builder().id(1L).firstName("patchedname").lastName("lastname").email("email@email.com").age(1).build();
         Customer expectedCustomer = Customer.builder().id(1L).firstName("patchedname").lastName("lastname").email("email@email.com").age(1).build();
 
         when(customerRepository.findById(1L)).thenReturn(Optional.of(savedCustomer));
-        when(customerRepository.save(updatedCustomer)).thenReturn(updatedCustomer);
+        when(customerRepository.save(patchedCustomer)).thenReturn(patchedCustomer);
 
         // when
         Customer actualCustomer = customerService.patchCustomer(patchCustomerInput);

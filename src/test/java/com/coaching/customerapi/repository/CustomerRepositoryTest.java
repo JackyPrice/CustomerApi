@@ -1,7 +1,6 @@
 package com.coaching.customerapi.repository;
 
 import com.coaching.customerapi.entity.CustomerEntity;
-import com.coaching.customerapi.model.Customer;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

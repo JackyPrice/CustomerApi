@@ -30,7 +30,8 @@ public class CustomerServiceImpl implements CustomerService {
         return convertCustomerEntityToCustomer(savedCustomer);
     }
 
-    @Override
+    @
+            Override
     public List<Customer> getCustomers() {
         List<CustomerEntity> savedCustomerList = customerRepository.findAll();
         List<Customer> customerList = new ArrayList<>();
