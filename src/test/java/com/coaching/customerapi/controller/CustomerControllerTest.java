@@ -89,99 +89,99 @@ class CustomerControllerTest {
                         "}"));
     }
 
-    // @Test
-    // @DisplayName("given request get request to customers endpoint, when called then expected list of customers returned")
-    // void testGetCustomersReturnsList() throws Exception {
-    //     // given
-    //     Customer customer1 = Customer.builder().id(1L).firstName("Jacky").lastName("Price").email("test@test.com").age(31).build();
-    //     Customer customer2 = Customer.builder().id(2L).firstName("Carl").lastName("Saptarshi").email("test@test.com").age(25).build();
-    //
-    //     List<Customer> expectedCustomerList = List.of(customer1, customer2);
-    //
-    //     when(customerService.getCustomers()).thenReturn(expectedCustomerList);
-    //
-    //     // whenThen
-    //     mockMvc.perform(get("/api/customers"))
-    //             .andExpect(status().isOk())
-    //             .andExpect(content().json("[" +
-    //                     "    {" +
-    //                     "        \"id\": 1," +
-    //                     "        \"firstName\": \"Jacky\"," +
-    //                     "        \"lastName\": \"Price\"," +
-    //                     "        \"email\": \"test@test.com\"," +
-    //                     "        \"age\": 31" +
-    //                     "    }," +
-    //                     "    {" +
-    //                     "        \"id\": 2," +
-    //                     "        \"firstName\": \"Carl\"," +
-    //                     "        \"lastName\": \"Saptarshi\"," +
-    //                     "        \"email\": \"test@test.com\"," +
-    //                     "        \"age\": 25" +
-    //                     "    }" +
-    //                     "]"
-    //             ));
-    // }
-    //
-    // @Test
-    // @DisplayName("give valid input, when updateCustomer is called then updated customer is returned")
-    // void testUpdateCustomerWithValidInput() throws Exception {
-    //     // given
-    //     Customer updateCustomer = Customer.builder().id(2L).firstName("updated").lastName("customer").email("update@updateemail.com").age(25).build();
-    //
-    //     // whenthen
-    //     when(customerService.updateCustomer(updateCustomer)).thenReturn(updateCustomer);
-    //
-    //     mockMvc.perform(put("/api/customers")
-    //             .accept(MediaType.APPLICATION_JSON)
-    //             .content(asJsonString(updateCustomer))
-    //             .contentType(MediaType.APPLICATION_JSON))
-    //             .andExpect(status().isOk())
-    //             .andExpect(content().json("{" +
-    //                     "    \"id\": 2," +
-    //                     "    \"firstName\": \"updated\"," +
-    //                     "    \"lastName\": \"customer\"," +
-    //                     "    \"email\": \"update@updateemail.com\"," +
-    //                     "    \"age\": 25" +
-    //                     "}"));
-    // }
-    //
-    // @Test
-    // @DisplayName("given valid fields, when patchCustomer is called, then a Customer with these changes should be returned")
-    // void testPatchCustomerWithValidInputs() throws Exception {
-    //     // given
-    //     Customer patchForCustomer = Customer.builder().id(1L).firstName("patch").build();
-    //     Customer patchedCustomer = Customer.builder().id(1L).firstName("patch").lastName("lastName").email("test@test.com").age(20).build();
-    //
-    //     when(customerService.patchCustomer(patchForCustomer)).thenReturn(patchedCustomer);
-    //
-    //     // whenthen
-    //     mockMvc.perform(patch("/api/customers")
-    //             .accept(MediaType.APPLICATION_JSON)
-    //             .content(asJsonString(patchForCustomer))
-    //             .contentType(MediaType.APPLICATION_JSON))
-    //             .andExpect(status().isOk())
-    //             .andExpect(content().json("{" +
-    //                     "    \"id\": 1," +
-    //                     "    \"firstName\": \"patch\"," +
-    //                     "    \"lastName\": \"lastName\"," +
-    //                     "    \"email\": \"test@test.com\"," +
-    //                     "    \"age\": 20" +
-    //                     "}"));
-    // }
-    //
-    // @Test
-    // @DisplayName("given valid id, when deleteCustomer is called then the customer is deleted")
-    // void testDeleteCustomerWithValidId() throws Exception {
-    //   // given
-    //
-    //   // whenThen
-    //     mockMvc.perform(delete("/api/customers/1"))
-    //             .andExpect(status().isOk());
-    //
-    //     verify(customerService).deleteCustomer(1L);
-    //
-    // }
-    //
+    @Test
+    @DisplayName("given request get request to customers endpoint, when called then expected list of customers returned")
+    void testGetCustomersReturnsList() throws Exception {
+        // given
+        Customer customer1 = Customer.builder().id(1L).firstName("Jacky").lastName("Price").email("test@test.com").age(31).build();
+        Customer customer2 = Customer.builder().id(2L).firstName("Carl").lastName("Saptarshi").email("test@test.com").age(25).build();
+
+        List<Customer> expectedCustomerList = List.of(customer1, customer2);
+
+        when(customerService.getCustomers()).thenReturn(expectedCustomerList);
+
+        // whenThen
+        mockMvc.perform(get("/api/customers"))
+                .andExpect(status().isOk())
+                .andExpect(content().json("[" +
+                        "    {" +
+                        "        \"id\": 1," +
+                        "        \"firstName\": \"Jacky\"," +
+                        "        \"lastName\": \"Price\"," +
+                        "        \"email\": \"test@test.com\"," +
+                        "        \"age\": 31" +
+                        "    }," +
+                        "    {" +
+                        "        \"id\": 2," +
+                        "        \"firstName\": \"Carl\"," +
+                        "        \"lastName\": \"Saptarshi\"," +
+                        "        \"email\": \"test@test.com\"," +
+                        "        \"age\": 25" +
+                        "    }" +
+                        "]"
+                ));
+    }
+
+    @Test
+    @DisplayName("give valid input, when updateCustomer is called then updated customer is returned")
+    void testUpdateCustomerWithValidInput() throws Exception {
+        // given
+        Customer updateCustomer = Customer.builder().id(2L).firstName("updated").lastName("customer").email("update@updateemail.com").age(25).build();
+
+        // whenthen
+        when(customerService.updateCustomer(updateCustomer)).thenReturn(updateCustomer);
+
+        mockMvc.perform(put("/api/customers")
+                .accept(MediaType.APPLICATION_JSON)
+                .content(asJsonString(updateCustomer))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().json("{" +
+                        "    \"id\": 2," +
+                        "    \"firstName\": \"updated\"," +
+                        "    \"lastName\": \"customer\"," +
+                        "    \"email\": \"update@updateemail.com\"," +
+                        "    \"age\": 25" +
+                        "}"));
+    }
+
+    @Test
+    @DisplayName("given valid fields, when patchCustomer is called, then a Customer with these changes should be returned")
+    void testPatchCustomerWithValidInputs() throws Exception {
+        // given
+        Customer patchForCustomer = Customer.builder().id(1L).firstName("patch").build();
+        Customer patchedCustomer = Customer.builder().id(1L).firstName("patch").lastName("lastName").email("test@test.com").age(20).build();
+
+        when(customerService.patchCustomer(patchForCustomer)).thenReturn(patchedCustomer);
+
+        // whenthen
+        mockMvc.perform(patch("/api/customers")
+                .accept(MediaType.APPLICATION_JSON)
+                .content(asJsonString(patchForCustomer))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().json("{" +
+                        "    \"id\": 1," +
+                        "    \"firstName\": \"patch\"," +
+                        "    \"lastName\": \"lastName\"," +
+                        "    \"email\": \"test@test.com\"," +
+                        "    \"age\": 20" +
+                        "}"));
+    }
+
+    @Test
+    @DisplayName("given valid id, when deleteCustomer is called then the customer is deleted")
+    void testDeleteCustomerWithValidId() throws Exception {
+      // given
+
+      // whenThen
+        mockMvc.perform(delete("/api/customers/1"))
+                .andExpect(status().isOk());
+
+        verify(customerService).deleteCustomer(1L);
+
+    }
+
     private static String asJsonString(final Object obj) {
         try {
             return new ObjectMapper().writeValueAsString(obj);

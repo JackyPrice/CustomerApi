@@ -1,17 +1,15 @@
 package com.coaching.customerapi.service;
 
 import com.coaching.customerapi.model.Customer;
+import org.springframework.stereotype.Service;
 
-public class CustomerService {
+import java.util.List;
 
-
-    public Customer createCustomer(Customer customer) {
-        return Customer.builder()
-                .id(1L)
-                .firstName("Test")
-                .lastName("Customer")
-                .email("test@test.com")
-                .age(1)
-                .build();
-    }
+public interface CustomerService {
+    Customer createCustomer(Customer customer);
+    Customer getCustomer(Long id);
+    List<Customer> getCustomers();
+    Customer updateCustomer(Customer customer);
+    Customer patchCustomer(Customer customer);
+    void deleteCustomer(Long id);
 }

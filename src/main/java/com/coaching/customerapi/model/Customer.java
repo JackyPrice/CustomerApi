@@ -2,8 +2,7 @@ package com.coaching.customerapi.model;
 
 import lombok.*;
 
-@Getter
-@EqualsAndHashCode
+@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
