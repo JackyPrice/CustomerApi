@@ -93,8 +93,20 @@ class CustomerControllerTest {
     @DisplayName("given request get request to customers endpoint, when called then expected list of customers returned")
     void testGetCustomersReturnsList() throws Exception {
         // given
-        Customer customer1 = Customer.builder().id(1L).firstName("Jacky").lastName("Price").email("test@test.com").age(31).build();
-        Customer customer2 = Customer.builder().id(2L).firstName("Carl").lastName("Saptarshi").email("test@test.com").age(25).build();
+        Customer customer1 = Customer.builder()
+                .id(1L).firstName("Jacky")
+                .lastName("Price")
+                .email("test@test.com")
+                .age(31)
+                .build();
+
+        Customer customer2 = Customer.builder()
+                .id(2L)
+                .firstName("Carl")
+                .lastName("Saptarshi")
+                .email("test@test.com")
+                .age(25)
+                .build();
 
         List<Customer> expectedCustomerList = List.of(customer1, customer2);
 
@@ -149,8 +161,18 @@ class CustomerControllerTest {
     @DisplayName("given valid fields, when patchCustomer is called, then a Customer with these changes should be returned")
     void testPatchCustomerWithValidInputs() throws Exception {
         // given
-        Customer patchForCustomer = Customer.builder().id(1L).firstName("patch").build();
-        Customer patchedCustomer = Customer.builder().id(1L).firstName("patch").lastName("lastName").email("test@test.com").age(20).build();
+        Customer patchForCustomer = Customer.builder()
+                .id(1L)
+                .firstName("patch")
+                .build();
+
+        Customer patchedCustomer = Customer.builder()
+                .id(1L)
+                .firstName("patch")
+                .lastName("lastName")
+                .email("test@test.com")
+                .age(20)
+                .build();
 
         when(customerService.patchCustomer(patchForCustomer)).thenReturn(patchedCustomer);
 
