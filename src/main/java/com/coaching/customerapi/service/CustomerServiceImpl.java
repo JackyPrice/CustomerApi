@@ -12,14 +12,14 @@ import java.util.UUID;
 @Service
 public class CustomerServiceImpl implements CustomerService{
     private final CustomerRepository customerRepository;
-    public CustomerServiceImpl(CustomerRepository customerRepository) {
+    private final UUIDGenerator uuidGenerator;
+    public CustomerServiceImpl(CustomerRepository customerRepository, UUIDGenerator uuidGenerator) {
         this.customerRepository = customerRepository;
+        this.uuidGenerator = uuidGenerator;
     }
 
     public Customer createCustomer(Customer customer) {
-        if (customer.getId() == "" || customer.getId() == null){
-            customer.setId(createCustomerUUID());
-        }
+        customer.setId(uuidGenerator.createUUID());
         CustomerEntity entity = convertCustomerToCustomerEntity(customer);
         return convertCustomerEntityToCustomer(customerRepository.save(entity));
     }
@@ -67,13 +67,9 @@ public class CustomerServiceImpl implements CustomerService{
         return savedCustomerEntity;
     }
 
-    private String createCustomerUUID(){
-        return UUID.randomUUID().toString();
-    }
-    
     private Customer convertCustomerEntityToCustomer(CustomerEntity customerEntity){
         return Customer.builder()
-                .id(customerEntity.getId().toString())
+                .id(customerEntity.getId())
                 .firstName(customerEntity.getFirstName())
                 .lastName(customerEntity.getLastName())
                 .email(customerEntity.getEmail())
@@ -83,7 +79,6 @@ public class CustomerServiceImpl implements CustomerService{
 
     private CustomerEntity convertCustomerToCustomerEntity(Customer customer){
         return CustomerEntity.builder()
-                // .id(UUID.fromString(customer.getId()))
                 .id(customer.getId())
                 .firstName(customer.getFirstName())
                 .lastName(customer.getLastName())

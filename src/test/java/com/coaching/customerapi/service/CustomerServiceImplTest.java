@@ -28,12 +28,14 @@ class CustomerServiceImplTest {
 
     @Mock
     private CustomerRepository customerRepository;
+    @Mock
+    private UUIDGenerator uuidGenerator;
 
     private CustomerServiceImpl customerService;
 
     @BeforeEach
     public void setup() {
-        this.customerService = new CustomerServiceImpl(customerRepository);
+        this.customerService = new CustomerServiceImpl(customerRepository, uuidGenerator);
     }
 
     private static final String TEST_UUID_ID_1 = "123e4567-e89b-12d3-a456-426614174000";
@@ -47,14 +49,15 @@ class CustomerServiceImplTest {
         // given
 
         Customer customerToBeSaved = Customer.builder().firstName("TestFirstName").lastName("TestSecondName").email("test@test.com").age(30).build();
-        CustomerEntity customerEntityToBeSaved = CustomerEntity.builder().firstName("TestFirstName").lastName("TestSecondName").email("test@test.com").age(30).build();
+        CustomerEntity customerEntityToBeSaved = CustomerEntity.builder().id(TEST_UUID_ID_1).firstName("TestFirstName").lastName("TestSecondName").email("test@test.com").age(30).build();
 
         CustomerEntity savedCustomerEntity = CustomerEntity.builder().id(TEST_UUID_ID_1).firstName("TestFirstName").lastName("TestSecondName").email("test@test.com").age(30).build();
         Customer expectedSavedCustomer = Customer.builder().id(TEST_UUID_ID_1).firstName("TestFirstName").lastName("TestSecondName").email("test@test.com").age(30).build();
 
+        when(uuidGenerator.createUUID()).thenReturn(TEST_UUID_ID_1);
         when(customerRepository.save(customerEntityToBeSaved)).thenReturn(savedCustomerEntity);
 
-        // whens
+        // when
         Customer actualSavedCustomer = customerService.createCustomer(customerToBeSaved);
 
         // then
