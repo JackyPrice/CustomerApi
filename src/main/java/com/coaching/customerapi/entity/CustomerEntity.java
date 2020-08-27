@@ -10,7 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "Customers")
+// @Table(name = "Customers")
+@Table(name = "testdb2")
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
