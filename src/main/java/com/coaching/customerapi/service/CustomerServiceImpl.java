@@ -17,6 +17,9 @@ public class CustomerServiceImpl implements CustomerService{
     }
 
     public Customer createCustomer(Customer customer) {
+        if (customer.getId() == "" || customer.getId() == null){
+            customer.setId(createCustomerUUID());
+        }
         CustomerEntity entity = convertCustomerToCustomerEntity(customer);
         return convertCustomerEntityToCustomer(customerRepository.save(entity));
     }
@@ -62,6 +65,10 @@ public class CustomerServiceImpl implements CustomerService{
             savedCustomerEntity.setAge(customerInput.getAge());
         }
         return savedCustomerEntity;
+    }
+
+    private String createCustomerUUID(){
+        return UUID.randomUUID().toString();
     }
     
     private Customer convertCustomerEntityToCustomer(CustomerEntity customerEntity){
