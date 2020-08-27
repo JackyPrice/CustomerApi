@@ -2,24 +2,40 @@ package com.coaching.customerapi.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.NoArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.Entity;
-import javax.persistence.GenerationType;
-import javax.persistence.*;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import java.util.UUID;
 
 @Entity
-// @Table(name = "Customers")
-@Table(name = "testdb2")
+@Table(name = "customers")
+@Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
 public class CustomerEntity {
+
+    // @GenericGenerator(
+    //         name = "UUID",
+    //         strategy = "org.hibernate.id.UUIDGenerator",
+    //         parameters = {
+    //                 @Parameter(
+    //                         name = "uuid_gen_strategy_class",
+    //                         value = "org.hibernate.id.uuid.CustomVersionOneStrategy"
+    //                 )
+    //         }
+    // )
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    // @GeneratedValue(generator = "UUID")
+    // @GenericGenerator(name = "uuid2", strategy = "uuid2")
+    // @Column(columnDefinition = "BINARY(16)")
+    // private UUID id;
+    private String id;
     private String firstName;
     private String lastName;
     private String email;

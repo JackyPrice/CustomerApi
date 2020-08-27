@@ -36,6 +36,11 @@ class CustomerServiceImplTest {
         this.customerService = new CustomerServiceImpl(customerRepository);
     }
 
+    private static final String TEST_UUID_ID_1 = "123e4567-e89b-12d3-a456-426614174000";
+    private static final String TEST_UUID_ID_2 = "123e4567-e89b-12d3-a456-426614174001";
+    private static final String TEST_UUID_ID_3 = "123e4567-e89b-12d3-a456-426614174001";
+
+
     @Test
     @DisplayName("given a valid Customer when the create customer method is called then it saves this customer in the database and returns a valid customer")
     public void createCustomer() {
@@ -44,8 +49,8 @@ class CustomerServiceImplTest {
         Customer customerToBeSaved = Customer.builder().firstName("TestFirstName").lastName("TestSecondName").email("test@test.com").age(30).build();
         CustomerEntity customerEntityToBeSaved = CustomerEntity.builder().firstName("TestFirstName").lastName("TestSecondName").email("test@test.com").age(30).build();
 
-        CustomerEntity savedCustomerEntity = CustomerEntity.builder().id(1L).firstName("TestFirstName").lastName("TestSecondName").email("test@test.com").age(30).build();
-        Customer expectedSavedCustomer = Customer.builder().id(1L).firstName("TestFirstName").lastName("TestSecondName").email("test@test.com").age(30).build();
+        CustomerEntity savedCustomerEntity = CustomerEntity.builder().id(TEST_UUID_ID_1).firstName("TestFirstName").lastName("TestSecondName").email("test@test.com").age(30).build();
+        Customer expectedSavedCustomer = Customer.builder().id(TEST_UUID_ID_1).firstName("TestFirstName").lastName("TestSecondName").email("test@test.com").age(30).build();
 
         when(customerRepository.save(customerEntityToBeSaved)).thenReturn(savedCustomerEntity);
 
@@ -61,13 +66,13 @@ class CustomerServiceImplTest {
     @DisplayName("give valid id, when the getCustomer method is called then it returns the customer with the same id")
     public void getCustomer() {
         // given
-        CustomerEntity savedCustomerEntity = CustomerEntity.builder().id(2L).firstName("Firstname").lastName("SecondName").email("email@email.com").age(20).build();
-        Customer expectedCustomer = Customer.builder().id(2L).firstName("Firstname").lastName("SecondName").email("email@email.com").age(20).build();
+        CustomerEntity savedCustomerEntity = CustomerEntity.builder().id(TEST_UUID_ID_2).firstName("Firstname").lastName("SecondName").email("email@email.com").age(20).build();
+        Customer expectedCustomer = Customer.builder().id(TEST_UUID_ID_2).firstName("Firstname").lastName("SecondName").email("email@email.com").age(20).build();
 
-        when(customerRepository.findById(2L)).thenReturn(Optional.of(savedCustomerEntity));
+        when(customerRepository.findById(TEST_UUID_ID_2)).thenReturn(Optional.of(savedCustomerEntity));
 
         // when
-        Customer actualCustomer = customerService.getCustomer(2L);
+        Customer actualCustomer = customerService.getCustomer(TEST_UUID_ID_2);
 
         // then
         assertEquals(expectedCustomer, actualCustomer);
@@ -78,15 +83,15 @@ class CustomerServiceImplTest {
     public void getCustomers() {
         // given
         List<Customer> expectedCustomerList = List.of(
-                Customer.builder().id(1L).firstName("Squall").lastName("Leonhart").email("test@test.com").age(17).build(),
-                Customer.builder().id(2L).firstName("Cloud").lastName("Strife").email("test@test.com").age(24).build(),
-                Customer.builder().id(3L).firstName("Noctis").lastName("Caelum").email("test@test.com").age(20).build()
+                Customer.builder().id(TEST_UUID_ID_1).firstName("Squall").lastName("Leonhart").email("test@test.com").age(17).build(),
+                Customer.builder().id(TEST_UUID_ID_2).firstName("Cloud").lastName("Strife").email("test@test.com").age(24).build(),
+                Customer.builder().id(TEST_UUID_ID_3).firstName("Noctis").lastName("Caelum").email("test@test.com").age(20).build()
         );
 
         when(customerRepository.findAll()).thenReturn(List.of(
-                CustomerEntity.builder().id(1L).firstName("Squall").lastName("Leonhart").email("test@test.com").age(17).build(),
-                CustomerEntity.builder().id(2L).firstName("Cloud").lastName("Strife").email("test@test.com").age(24).build(),
-                CustomerEntity.builder().id(3L).firstName("Noctis").lastName("Caelum").email("test@test.com").age(20).build()
+                CustomerEntity.builder().id(TEST_UUID_ID_1).firstName("Squall").lastName("Leonhart").email("test@test.com").age(17).build(),
+                CustomerEntity.builder().id(TEST_UUID_ID_2).firstName("Cloud").lastName("Strife").email("test@test.com").age(24).build(),
+                CustomerEntity.builder().id(TEST_UUID_ID_3).firstName("Noctis").lastName("Caelum").email("test@test.com").age(20).build()
         ));
 
         // when
@@ -102,8 +107,8 @@ class CustomerServiceImplTest {
         // given
         Customer updateCustomerInput = Customer.builder().firstName("updated").lastName("customer").email("updated@test.com").age(20).build();
         CustomerEntity updateCustomerEntity = CustomerEntity.builder().firstName("updated").lastName("customer").email("updated@test.com").age(20).build();
-        CustomerEntity updatedCustomer = CustomerEntity.builder().id(1L).firstName("updated").lastName("customer").email("updated@test.com").age(20).build();
-        Customer expectedCustomer = Customer.builder().id(1L).firstName("updated").lastName("customer").email("updated@test.com").age(20).build();
+        CustomerEntity updatedCustomer = CustomerEntity.builder().id(TEST_UUID_ID_1).firstName("updated").lastName("customer").email("updated@test.com").age(20).build();
+        Customer expectedCustomer = Customer.builder().id(TEST_UUID_ID_1).firstName("updated").lastName("customer").email("updated@test.com").age(20).build();
 
         when(customerRepository.save(updateCustomerEntity)).thenReturn(updatedCustomer);
 
@@ -118,12 +123,12 @@ class CustomerServiceImplTest {
     @DisplayName("given valid customer fields when patchCustomer is called then the correct changes are made to the Customer")
     public void patchCustomer() {
         // given
-        Customer patchCustomerInput = Customer.builder().id(1L).firstName("patchedname").build();
-        CustomerEntity savedCustomer = CustomerEntity.builder().id(1L).firstName("fistname").lastName("lastname").email("email@email.com").age(1).build();
-        CustomerEntity patchedCustomer = CustomerEntity.builder().id(1L).firstName("patchedname").lastName("lastname").email("email@email.com").age(1).build();
-        Customer expectedCustomer = Customer.builder().id(1L).firstName("patchedname").lastName("lastname").email("email@email.com").age(1).build();
+        Customer patchCustomerInput = Customer.builder().id(TEST_UUID_ID_1).firstName("patchedname").build();
+        CustomerEntity savedCustomer = CustomerEntity.builder().id(TEST_UUID_ID_1).firstName("fistname").lastName("lastname").email("email@email.com").age(1).build();
+        CustomerEntity patchedCustomer = CustomerEntity.builder().id(TEST_UUID_ID_1).firstName("patchedname").lastName("lastname").email("email@email.com").age(1).build();
+        Customer expectedCustomer = Customer.builder().id(TEST_UUID_ID_1).firstName("patchedname").lastName("lastname").email("email@email.com").age(1).build();
 
-        when(customerRepository.findById(1L)).thenReturn(Optional.of(savedCustomer));
+        when(customerRepository.findById(TEST_UUID_ID_1)).thenReturn(Optional.of(savedCustomer));
         when(customerRepository.save(patchedCustomer)).thenReturn(patchedCustomer);
 
         // when
@@ -135,9 +140,9 @@ class CustomerServiceImplTest {
 
 
     @ParameterizedTest
-    @ValueSource(longs = {1L, 2L, 3L})
+    @ValueSource(strings = {TEST_UUID_ID_1, TEST_UUID_ID_2, TEST_UUID_ID_3})
     @DisplayName("given valid id, when deleted then doesn't return a value")
-    public void deleteCustomer(Long input) {
+    public void deleteCustomer(String input) {
         // given
 
         // when

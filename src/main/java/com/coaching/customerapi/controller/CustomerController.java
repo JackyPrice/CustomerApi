@@ -21,7 +21,7 @@ public class CustomerController {
     }
 
     @GetMapping("/api/customer/{id}")
-    public Customer getCustomer(@PathVariable("id") Long id){
+    public Customer getCustomer(@PathVariable("id") String id){
         return customerService.getCustomer(id);
     }
 
@@ -41,7 +41,7 @@ public class CustomerController {
     }
 
     @DeleteMapping("/api/customers/{id}")
-    public void deleteCustomer(@PathVariable("id") Long id){
+    public void deleteCustomer(@PathVariable("id") String id){
         customerService.deleteCustomer(id);
     }
 }

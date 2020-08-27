@@ -36,6 +36,9 @@ class CustomerControllerTest {
         mockMvc = MockMvcBuilders.standaloneSetup(customerController).build();
     }
 
+    private static final String TEST_UUID_ID_1 = "123e4567-e89b-12d3-a456-426614174000";
+    private static final String TEST_UUID_ID_2 = "123e4567-e89b-12d3-a456-426614174001";
+
     @Test
     @DisplayName("given valid customer then return customer with valid id")
     void testCreateCustomer() throws Exception {
@@ -47,7 +50,7 @@ class CustomerControllerTest {
                 .age(1).build();
 
         Customer expectedCustomer = Customer.builder()
-        .id(1L)
+        .id(TEST_UUID_ID_1)
         .firstName("Test")
         .lastName("Customer")
         .email("test@test.com")
@@ -61,7 +64,7 @@ class CustomerControllerTest {
                 .content(asJsonString(customerToSave))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", Is.is(1)));
+                .andExpect(jsonPath("$.id", Is.is("123e4567-e89b-12d3-a456-426614174000")));
     }
 
     @Test
@@ -69,19 +72,19 @@ class CustomerControllerTest {
     void testGetCustomerById() throws Exception {
       // given
         Customer expectedCustomer = Customer.builder()
-        .id(1L)
+        .id(TEST_UUID_ID_1)
         .firstName("carl")
         .lastName("saptarshi")
         .email("test@test.com")
         .age(23).build();
 
-        when(customerService.getCustomer(1L)).thenReturn(expectedCustomer);
+        when(customerService.getCustomer(TEST_UUID_ID_1)).thenReturn(expectedCustomer);
 
       // whenThen
-        mockMvc.perform(get("/api/customer/1"))
+        mockMvc.perform(get("/api/customer/"+ TEST_UUID_ID_1))
                 .andExpect(status().isOk())
                 .andExpect(content().json("{" +
-                        "\"id\": 1," +
+                        "\"id\": 123e4567-e89b-12d3-a456-426614174000," +
                         "\"firstName\": \"carl\"," +
                         "\"lastName\": \"saptarshi\"," +
                         "\"email\": \"test@test.com\"," +
@@ -94,14 +97,14 @@ class CustomerControllerTest {
     void testGetCustomersReturnsList() throws Exception {
         // given
         Customer customer1 = Customer.builder()
-                .id(1L).firstName("Jacky")
+                .id(TEST_UUID_ID_1).firstName("Jacky")
                 .lastName("Price")
                 .email("test@test.com")
                 .age(31)
                 .build();
 
         Customer customer2 = Customer.builder()
-                .id(2L)
+                .id(TEST_UUID_ID_2)
                 .firstName("Carl")
                 .lastName("Saptarshi")
                 .email("test@test.com")
@@ -117,14 +120,14 @@ class CustomerControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().json("[" +
                         "    {" +
-                        "        \"id\": 1," +
+                        "        \"id\": 123e4567-e89b-12d3-a456-426614174000," +
                         "        \"firstName\": \"Jacky\"," +
                         "        \"lastName\": \"Price\"," +
                         "        \"email\": \"test@test.com\"," +
                         "        \"age\": 31" +
                         "    }," +
                         "    {" +
-                        "        \"id\": 2," +
+                        "        \"id\": 123e4567-e89b-12d3-a456-426614174001," +
                         "        \"firstName\": \"Carl\"," +
                         "        \"lastName\": \"Saptarshi\"," +
                         "        \"email\": \"test@test.com\"," +
@@ -138,7 +141,7 @@ class CustomerControllerTest {
     @DisplayName("give valid input, when updateCustomer is called then updated customer is returned")
     void testUpdateCustomerWithValidInput() throws Exception {
         // given
-        Customer updateCustomer = Customer.builder().id(2L).firstName("updated").lastName("customer").email("update@updateemail.com").age(25).build();
+        Customer updateCustomer = Customer.builder().id(TEST_UUID_ID_2).firstName("updated").lastName("customer").email("update@updateemail.com").age(25).build();
 
         // whenthen
         when(customerService.updateCustomer(updateCustomer)).thenReturn(updateCustomer);
@@ -149,7 +152,7 @@ class CustomerControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().json("{" +
-                        "    \"id\": 2," +
+                        "    \"id\": 123e4567-e89b-12d3-a456-426614174001," +
                         "    \"firstName\": \"updated\"," +
                         "    \"lastName\": \"customer\"," +
                         "    \"email\": \"update@updateemail.com\"," +
@@ -162,12 +165,12 @@ class CustomerControllerTest {
     void testPatchCustomerWithValidInputs() throws Exception {
         // given
         Customer patchForCustomer = Customer.builder()
-                .id(1L)
+                .id(TEST_UUID_ID_1)
                 .firstName("patch")
                 .build();
 
         Customer patchedCustomer = Customer.builder()
-                .id(1L)
+                .id(TEST_UUID_ID_1)
                 .firstName("patch")
                 .lastName("lastName")
                 .email("test@test.com")
@@ -183,7 +186,7 @@ class CustomerControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().json("{" +
-                        "    \"id\": 1," +
+                        "    \"id\": 123e4567-e89b-12d3-a456-426614174000," +
                         "    \"firstName\": \"patch\"," +
                         "    \"lastName\": \"lastName\"," +
                         "    \"email\": \"test@test.com\"," +
@@ -197,10 +200,10 @@ class CustomerControllerTest {
       // given
 
       // whenThen
-        mockMvc.perform(delete("/api/customers/1"))
+        mockMvc.perform(delete("/api/customers/123e4567-e89b-12d3-a456-426614174000"))
                 .andExpect(status().isOk());
 
-        verify(customerService).deleteCustomer(1L);
+        verify(customerService).deleteCustomer(TEST_UUID_ID_1);
 
     }
 

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class CustomerServiceImpl implements CustomerService{
@@ -20,7 +21,7 @@ public class CustomerServiceImpl implements CustomerService{
         return convertCustomerEntityToCustomer(customerRepository.save(entity));
     }
 
-    public Customer getCustomer(Long id){
+    public Customer getCustomer(String id){
         return convertCustomerEntityToCustomer(customerRepository.findById(id).get());
     }
 
@@ -42,7 +43,7 @@ public class CustomerServiceImpl implements CustomerService{
         return convertCustomerEntityToCustomer(customerRepository.save(patchedCustomer));
     }
 
-    public void deleteCustomer(Long id) {
+    public void deleteCustomer(String id) {
         customerRepository.deleteById(id);
     }
 
@@ -65,7 +66,7 @@ public class CustomerServiceImpl implements CustomerService{
     
     private Customer convertCustomerEntityToCustomer(CustomerEntity customerEntity){
         return Customer.builder()
-                .id(customerEntity.getId())
+                .id(customerEntity.getId().toString())
                 .firstName(customerEntity.getFirstName())
                 .lastName(customerEntity.getLastName())
                 .email(customerEntity.getEmail())
@@ -75,6 +76,7 @@ public class CustomerServiceImpl implements CustomerService{
 
     private CustomerEntity convertCustomerToCustomerEntity(Customer customer){
         return CustomerEntity.builder()
+                // .id(UUID.fromString(customer.getId()))
                 .id(customer.getId())
                 .firstName(customer.getFirstName())
                 .lastName(customer.getLastName())
