@@ -1,2 +1,2 @@
-INSERT INTO customers(id, firstname, lastname, email, age) VALUES (100, 'firstname1', 'lastname1', 'email1@address.com', 20);
-INSERT INTO customers(id, firstname, lastname, email, age) VALUES (101, 'firstname2', 'lastname2', 'email2@address.com', 21);
+INSERT INTO customers(id, first_name, last_name, email, age) VALUES ('57ad00c4-5e08-43ca-9630-af962b7580ba', 'firstname1', 'lastname1', 'email1@address.com', 20);
+INSERT INTO customers(id, first_name, last_name, email, age) VALUES ('e579e2d7-695c-43bb-a0b8-bf8bdd8036bd', 'firstname2', 'lastname2', 'email2@address.com', 21);
